@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import com.sbsj.mybooklist.api.BookService
+import com.sbsj.mybooklist.api.Retrofit2Class
 import com.sbsj.mybooklist.model.Book
 import com.sbsj.mybooklist.model.SearchBooksDto
 import retrofit2.Call
@@ -19,10 +20,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
 
-        val retrofit = Retrofit.Builder()
-            .baseUrl("https://openapi.naver.com")
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
+       val retrofit = Retrofit2Class.retrofit
 
 
         val bookService = retrofit.create(BookService::class.java)
@@ -32,7 +30,7 @@ class MainActivity : AppCompatActivity() {
                     call: Call<SearchBooksDto>,
                     response: Response<SearchBooksDto>
                 ) {
-                   // todo 통신에 성공할 경우
+                   // todo 응답코드가 200이아니고 400이라도 호출하기 떄문에 if문에 적용해야함.
                     if(response.isSuccessful.not()){
                         Log.d(TAG,"not success${response}")
                         return
